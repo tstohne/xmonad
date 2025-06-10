@@ -1,0 +1,54 @@
+Config { 
+   -- appearance
+     font =         "xft:DejaVu Sans Mono:size=10:bold:antialias=true"
+   , additionalFonts = [ "xft:FontAwesome:size=10" ]
+   , bgColor =      "#3f3f3f"
+   , fgColor =      "#dcdccc"
+   , position =     Top
+   , border =       BottomB
+   , borderColor =  "#646464"
+   -- layout
+   , sepChar =  "%"   -- delineator between plugin names and straight text
+   , alignSep = "}{"  -- separator between left-right alignment
+   , template = "%StdinReader% }{ %wlan0% | %multicoretemp% | %default:Master% | %date% "
+   -- general behavior
+   , lowerOnStart = True     -- send to bottom of window stack on start
+   , hideOnStart = False     -- start with window unmapped (hidden)
+   , allDesktops = True      -- show on all desktops
+   , overrideRedirect = True -- set the Override Redirect flag (Xlib)
+   , pickBroadest = False    -- choose widest display (multi-monitor)
+   , persistent = True       -- enable/disable hiding (True = disabled)
+   -- plugins
+   , commands = 
+        -- network activity monitor
+        [ Run Network "wlan0" [ "--template" , "<dev>: <tx>kB/s|<rx>kB/s"
+                             , "--Low"      , "1000"       -- units: B/s
+                             , "--High"     , "5000"       -- units: B/s
+                             , "--low"      , "#7f9f7f"
+                             , "--normal"   , "#f0dfaf"
+                             , "--high"     , "#cc9393"
+                             ] 10
+        -- cpu core temperature monitor
+        , Run MultiCoreTemp [ "--template" , "Temp: <avg>°C"
+                             , "--Low"      , "70"        -- units: °C
+                             , "--High"     , "80"        -- units: °C
+                             , "--low"      , "#7f9f7f"
+                             , "--normal"   , "#f0dfaf"
+                             , "--high"     , "#cc9393"
+                             ] 50
+                          
+        -- volume monitor
+        , Run Volume "default" "Master" 
+            [ "-t", "<status>: <volume>%"
+            , "--"
+            , "-O", "Vol"
+            , "-o", "Mute"
+            , "-C", "#f0dfaf"
+            , "-c", "#cc9393"
+            ] 10
+        -- time and date indicator 
+        , Run Date "<action=`gsimplecal`>%a %b %_d %H:%M</action>" "date" 10
+        -- Reads from stdin (used for workspace info from xmonad)
+        , Run StdinReader
+        ]
+   }
