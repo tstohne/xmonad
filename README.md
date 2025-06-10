@@ -1,4 +1,7 @@
 # xmonad
 Swedish keyboard layout with Capslock and Esc swapped, Zenburn theme, gsimplecal etc.
-Dependencies: trayer
+
+Dependencies:
+DejaVu Sans Mono font
+trayer
 
