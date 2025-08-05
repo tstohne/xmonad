@@ -1,4 +1,5 @@
 import System.Exit
+-- import System.Process
 import XMonad
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.EwmhDesktops
@@ -85,10 +86,10 @@ myStartupHook = do
   spawnOnce "setxkbmap se -option caps:swapescape" -- Swedish layout with caps/esc swap
   spawnOnce "nitrogen --restore &" -- Restore wallpaper
   -- Removed the xmobar spawn - main function handles this now
-  spawn "pkill trayer; sleep 2" -- Kill existing trayer
-  spawn "trayer --edge top --align right --widthtype request --height 22 --transparent true --tint 0x3f3f3f --margin 0 --distance 0 --padding 2 &" -- Start trayer
-  spawn "sleep 3; nm-applet &" -- Network manager applet (delayed)
-  spawn "sleep 4; blueman-applet &" -- Bluetooth manager applet (delayed)
+  spawnOnce "pkill trayer; sleep 2" -- Kill existing trayer
+  spawnOnce "trayer --edge top --align right --widthtype request --height 22 --transparent true --tint 0x3f3f3f --margin 0 --distance 0 --padding 2 &" -- Start trayer
+  spawnOnce "sleep 3; nm-applet &" -- Network manager applet (delayed)
+  spawnOnce "sleep 4; blueman-applet &" -- Bluetooth manager applet (delayed)
 
 -- XMobar PP
 myXmobarPP :: PP
