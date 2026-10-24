@@ -2,6 +2,7 @@ import System.Exit (exitSuccess)
 import XMonad
 import XMonad.Hooks.EwmhDesktops (ewmh, ewmhFullscreen)
 import XMonad.Hooks.ManageHelpers (isDialog, transience')
+import XMonad.Actions.SpawnOn (manageSpawn)
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
 import XMonad.Hooks.UrgencyHook
@@ -14,7 +15,7 @@ import XMonad.Util.EZConfig (additionalKeysP)
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.NamedWindows (getName)
 import XMonad.Util.Run (safeSpawn)
-import XMonad.Util.SpawnOnce (spawnOnce)
+import XMonad.Util.SpawnOnce (spawnOnOnce, spawnOnce)
 import XMonad.Util.WorkspaceCompare (filterOutWs)
 
 -- Zenburn
@@ -30,6 +31,9 @@ zenOrange  = "#dfaf8f"
 
 myTerminal :: String
 myTerminal = "kitty"
+
+myWorkspaces :: [String]
+myWorkspaces = ["Web", "Term", "Emacs", "Chat", "Etc"]
 
 main :: IO ()
 main =
@@ -47,6 +51,7 @@ myConfig =
   def
     { modMask = mod4Mask
     , terminal = myTerminal
+    , workspaces = myWorkspaces
     , borderWidth = 2
     , normalBorderColor = zenBg
     , focusedBorderColor = zenOrange
@@ -95,7 +100,8 @@ myLayout =
 myManageHook :: ManageHook
 myManageHook =
   composeAll
-    [ namedScratchpadManageHook scratchpads
+    [ manageSpawn
+    , namedScratchpadManageHook scratchpads
     , isDialog --> doFloat
     , transience'
     , className =? "Gimp" --> doFloat
@@ -111,6 +117,10 @@ myStartupHook = do
   spawnOnce "nm-applet"
   spawnOnce "blueman-applet"
   spawnOnce "dunst"
+  spawnOnOnce "Web" "/usr/bin/thorium-browser"
+  spawnOnOnce "Term" "/usr/bin/kitty"
+  spawnOnOnce "Emacs" "/usr/bin/emacsclient -r -a ''"
+  spawnOnOnce "Chat" "/usr/bin/mattermost-desktop"
 
 -- Urgency ------------------------------------------------------------
 data LibNotifyUrgencyHook = LibNotifyUrgencyHook
