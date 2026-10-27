@@ -112,6 +112,7 @@ myManageHook =
 myStartupHook :: X ()
 myStartupHook = do
   spawnOnce "setxkbmap -layout se -option '' -option caps:swapescape"
+  spawnOnce "picom --config ~/.config/picom/picom.conf -b"
   spawnOnce "nitrogen --restore"
   spawnOnce "trayer --edge top --align right --widthtype request --height 22 --transparent true --alpha 0 --tint 0x3f3f3f --padding 2 --monitor primary"
   spawnOnce "nm-applet"
@@ -119,7 +120,7 @@ myStartupHook = do
   spawnOnce "dunst"
   spawnOnOnce "Web" "/usr/bin/thorium-browser"
   spawnOnOnce "Term" "/usr/bin/kitty"
-  spawnOnOnce "Emacs" "/usr/bin/emacsclient -r -a ''"
+  spawnOnOnce "Emacs" "/usr/bin/emacsclient -c"
   spawnOnOnce "Chat" "/usr/bin/mattermost-desktop"
 
 -- Urgency ------------------------------------------------------------
