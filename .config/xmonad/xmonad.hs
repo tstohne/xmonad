@@ -70,7 +70,7 @@ myKeys =
   , ("M-S-p", spawn "rofi -show run")
   , ("M-b", spawn "thorium-browser")
   , ("M-e", spawn "thunar")
-  , ("M-S-e", spawn "emacsclient -c -a ''")
+  , ("M-S-e", spawn "emacsclient -c")
   , ("M-`", namedScratchpadAction scratchpads "term")
   , ("M-S-z", spawn "xscreensaver-command -lock")
   , ("<Print>", unGrab *> spawn "scrot -s ~/Pictures/%F_%T.png")
