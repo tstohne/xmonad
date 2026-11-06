@@ -18,30 +18,30 @@ Config {
    , pickBroadest = False
    , persistent = True
    -- plugins (refresh rates are in tenths of a second)
-   , commands =
-        [ Run Network "wlan0" [ "--template" , "<dev>: <tx>kB/s|<rx>kB/s"
-                              , "--Low"      , "1000"
-                              , "--High"     , "5000"
-                              , "--low"      , "#7f9f7f"
-                              , "--normal"   , "#f0dfaf"
-                              , "--high"     , "#cc9393"
-                              ] 20                      -- 2 s
-        , Run MultiCoreTemp [ "--template" , "Temp: <avg>°C"
-                              , "--Low"      , "70"
-                              , "--High"     , "80"
-                              , "--low"      , "#7f9f7f"
-                              , "--normal"   , "#f0dfaf"
-                              , "--high"     , "#cc9393"
-                              ] 100                     -- 10 s
-        , Run Volume "default" "Master"
-            [ "-t", "<status>: <volume>%"
-            , "--"
-            , "-O", "Vol"
-            , "-o", "Mute"
-            , "-C", "#f0dfaf"
-            , "-c", "#cc9393"
-            ] 20                                        -- 2 s
-        , Run Date "<action=`gsimplecal`>%a %b %_d %H:%M</action>" "date" 100  -- 10 s
-        , Run XMonadLog
-        ]
-   }
+  , commands =
+      [ Run Network "wlan0" [ "--template" , "<dev>: <tx>kB/s|<rx>kB/s"
+                            , "--Low"      , "1000"
+                            , "--High"     , "5000"
+                            , "--low"      , "#7f9f7f"
+                            , "--normal"   , "#f0dfaf"
+                            , "--high"     , "#cc9393"
+                            ] 50                      -- 5 s
+      , Run MultiCoreTemp [ "--template" , "Temp: <avg>°C"
+                            , "--Low"      , "70"
+                            , "--High"     , "80"
+                            , "--low"      , "#7f9f7f"
+                            , "--normal"   , "#f0dfaf"
+                            , "--high"     , "#cc9393"
+                            ] 150                     -- 15 s
+      , Run Volume "default" "Master"
+          [ "-t", "<status>: <volume>%"
+          , "--"
+          , "-O", "Vol"
+          , "-o", "Mute"
+          , "-C", "#f0dfaf"
+          , "-c", "#cc9393"
+          ] 50                                        -- 5 s
+      , Run Date "<action=`gsimplecal`>%a %b %_d %H:%M</action>" "date" 300  -- 30 s
+      , Run XMonadLog
+      ]
+ }
