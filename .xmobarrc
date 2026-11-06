@@ -1,6 +1,6 @@
 Config {
    -- appearance
-     font =         "xft:DejaVu Sans Mono:size=12:bold:antialias=true"
+     font =         "xft:FiraCode Nerd Font:style=Medium:size=12:antialias=true"
    , bgColor =      "#3f3f3f"
    , fgColor =      "#dcdccc"
    , position =     TopW L 90      -- leave the right 10% for trayer
