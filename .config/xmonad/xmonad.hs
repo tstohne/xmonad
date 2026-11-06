@@ -68,12 +68,13 @@ myKeys =
   , ("M-S-<Return>", windows W.swapMaster) -- default M-<Return>, displaced
   , ("M-p", spawn "rofi -show drun")
   , ("M-S-p", spawn "rofi -show run")
-  , ("M-b", spawn "thorium-browser")
-  , ("M-e", spawn "thunar")
-  , ("M-S-e", spawn "emacsclient -c")
-  , ("M-`", namedScratchpadAction scratchpads "term")
+  , ("M-b", spawn "/opt/brave-bin/brave-browser")
+  , ("M-f", spawn "thunar")
+  , ("M-e", spawn "emacsclient -c")
+  , ("M-'", namedScratchpadAction scratchpads "term")
   , ("M-S-z", spawn "xscreensaver-command -lock")
   , ("<Print>", unGrab *> spawn "scrot -s ~/Pictures/%F_%T.png")
+  , ("M-q", spawn "xmonad --recompile; xmonad --restart")
   , ("M-S-q", confirmPrompt def "exit XMonad?" $ io exitSuccess)
   , ("<XF86AudioRaiseVolume>", spawn "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+")
   , ("<XF86AudioLowerVolume>", spawn "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-")
@@ -106,6 +107,11 @@ myManageHook =
     , transience'
     , className =? "Gimp" --> doFloat
     , className =? "Blueman-manager" --> doFloat
+    -- manageSpawn matches windows by PID, which fails for apps whose window
+    -- belongs to another process (emacsclient -> emacs daemon, Electron apps),
+    -- so also place these by window class. Check with: xprop WM_CLASS
+    , className =? "Emacs" --> doShift "Emacs"
+    , className =? "Mattermost" --> doShift "Chat"
     ]
 
 -- Startup ------------------------------------------------------------
@@ -118,7 +124,7 @@ myStartupHook = do
   spawnOnce "nm-applet"
   spawnOnce "blueman-applet"
   spawnOnce "dunst"
-  spawnOnOnce "Web" "/usr/bin/thorium-browser"
+  spawnOnOnce "Web" "/opt/brave-bin/brave-browser"
   spawnOnOnce "Term" "/usr/bin/kitty"
   spawnOnOnce "Emacs" "/usr/bin/emacsclient -c"
   spawnOnOnce "Chat" "/usr/bin/mattermost-desktop"
