@@ -9,7 +9,7 @@ Config {
    -- layout
    , sepChar =  "%"
    , alignSep = "}{"
-   , template = "%XMonadLog% }{ %wlan0% | %multicoretemp% | %default:Master% | %date% "
+   , template = "%XMonadLog% }{ %wlan0% | %multicoretemp% | %default:Master% | %battery% | %date% "
    -- general behavior
    , lowerOnStart = True
    , hideOnStart = False
@@ -33,6 +33,13 @@ Config {
                             , "--normal"   , "#f0dfaf"
                             , "--high"     , "#cc9393"
                             ] 150                     -- 15 s
+      , Run BatteryP ["BAT1"]
+                     [ "-t", "<acstatus> <left>%"
+                     , "-L", "20", "-H", "80"
+                     , "--low", "#cc9393", "--normal", "#f0dfaf", "--high", "#7f9f7f"
+                     , "--"
+                     , "-O", "AC", "-o", "Bat", "-i", "AC"
+                     ] 300                                       -- 30 s
       , Run Volume "default" "Master"
           [ "-t", "<status>: <volume>%"
           , "--"
