@@ -1,6 +1,6 @@
 # xmonad
-Swedish keyboard layout with Capslock and Esc swapped, Zenburn theme, gsimplecal etc.
+Swedish keyboard layout with Capslock and Esc swapped, Zenburn theme, autostart of web browser, terminal, emacsclient, and chat.
 
 Dependencies:
-DejaVu Sans Mono font and trayer
+FiraCode Nerd Font Medium and trayer
 
