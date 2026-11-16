@@ -1,15 +1,18 @@
 Config {
    -- appearance
-     font =         "xft:FiraCode Nerd Font:style=Medium:size=12:antialias=true"
-   , bgColor =      "#3f3f3f"
-   , fgColor =      "#dcdccc"
+     font =            "xft:FiraCode Nerd Font:style=Medium:size=11:antialias=true"
+   , additionalFonts = [ "xft:FiraCode Nerd Font:size=13:antialias=true" ]
+   , bgColor =         "#3f3f3f"
+   , fgColor =         "#dcdccc"
+   , alpha =           240          -- slight transparency (needs a compositor)
    , position =     TopW L 90      -- leave the right 10% for trayer
-   , border =       BottomB
-   , borderColor =  "#646464"
+   , border =          BottomB
+   , borderColor =     "#656555"
+   , borderWidth =     1
    -- layout
    , sepChar =  "%"
    , alignSep = "}{"
-   , template = "%XMonadLog% }{ %wlan0% | %multicoretemp% | %default:Master% | %battery% | %date% "
+   , template = " %XMonadLog% }{ %cpu% <fc=#656555>│</fc> %memory% <fc=#656555>│</fc> %multicoretemp% <fc=#656555>│</fc> %dynnetwork% <fc=#656555>│</fc> %default:Master% <fc=#656555>│</fc> %battery% <fc=#656555>│</fc> %date% "
    -- general behavior
    , lowerOnStart = True
    , hideOnStart = False
@@ -17,38 +20,41 @@ Config {
    , overrideRedirect = True
    , pickBroadest = False
    , persistent = True
-   -- plugins (refresh rates are in tenths of a second)
-  , commands =
-      [ Run Network "wlan0" [ "--template" , "<dev>: <tx>kB/s|<rx>kB/s"
-                            , "--Low"      , "1000"
-                            , "--High"     , "5000"
-                            , "--low"      , "#7f9f7f"
-                            , "--normal"   , "#f0dfaf"
-                            , "--high"     , "#cc9393"
-                            ] 50                      -- 5 s
-      , Run MultiCoreTemp [ "--template" , "Temp: <avg>°C"
-                            , "--Low"      , "70"
-                            , "--High"     , "80"
-                            , "--low"      , "#7f9f7f"
-                            , "--normal"   , "#f0dfaf"
-                            , "--high"     , "#cc9393"
-                            ] 150                     -- 15 s
+   , commands =
+      [ Run Cpu [ "-t", "<fc=#8cd0d3><fn=1>\xf2db</fn></fc> <total>%"
+                , "-L", "30", "-H", "70"
+                , "--low", "#7f9f7f", "--normal", "#f0dfaf", "--high", "#cc9393"
+                ] 20
+      , Run Memory [ "-t", "<fc=#8cd0d3><fn=1>\xf538</fn></fc> <usedratio>%"
+                   , "-L", "40", "-H", "80"
+                   , "--low", "#7f9f7f", "--normal", "#f0dfaf", "--high", "#cc9393"
+                   ] 30
+      , Run MultiCoreTemp [ "-t", "<fc=#8cd0d3><fn=1>\xf2c9</fn></fc> <avg>°C"
+                          , "-L", "60", "-H", "80"
+                          , "--low", "#7f9f7f", "--normal", "#f0dfaf", "--high", "#cc9393"
+                          , "--" , "--mintemp", "20", "--maxtemp", "100"
+                          ] 50
+      , Run DynNetwork [ "-t", "<fc=#8cd0d3><fn=1>\xf1eb</fn></fc> <rx>↓ <tx>↑"
+                       , "-S", "True"
+                       ] 20
       , Run BatteryP ["BAT1"]
                      [ "-t", "<acstatus> <left>%"
                      , "-L", "20", "-H", "80"
                      , "--low", "#cc9393", "--normal", "#f0dfaf", "--high", "#7f9f7f"
                      , "--"
-                     , "-O", "AC", "-o", "Bat", "-i", "AC"
-                     ] 300                                       -- 30 s
+                     , "-O", "<fn=1>\xf1e6</fn>"   -- charging
+                     , "-o", "<fn=1>\xf240</fn>"   -- discharging
+                     , "-i", "<fn=1>\xf1e6</fn>"   -- idle/full
+                     ] 100
       , Run Volume "default" "Master"
-          [ "-t", "<status>: <volume>%"
+          [ "-t", "<status> <volume>%"
           , "--"
-          , "-O", "Vol"
-          , "-o", "Mute"
-          , "-C", "#f0dfaf"
+          , "-O", "<fc=#8cd0d3><fn=1>\xf028</fn></fc>"
+          , "-o", "<fc=#cc9393><fn=1>\xf026</fn></fc>"
+          , "-C", "#dcdccc"
           , "-c", "#cc9393"
-          ] 50                                        -- 5 s
-      , Run Date "<action=`gsimplecal`>%a %b %_d %H:%M</action>" "date" 300  -- 30 s
+          ] 10
+      , Run Date "<action=`gsimplecal`><fc=#8cd0d3><fn=1>\xf073</fn></fc> %a %b %_d  %H:%M</action>" "date" 100
       , Run XMonadLog
       ]
  }
