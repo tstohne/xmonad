@@ -1,5 +1,5 @@
 # xmonad
-Swedish keyboard layout with Capslock and Esc swapped, Zenburn theme, autostart of web browser, terminal, emacsclient, and chat.
+Swedish keyboard layout with Caps Lock and Esc swapped, menu key as Compose key, Zenburn theme, and autostart for the web browser, terminal, emacsclient, email client, and chat.
 
 Dependencies:
 FiraCode Nerd Font Medium and trayer
