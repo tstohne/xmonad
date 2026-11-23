@@ -47,7 +47,7 @@ myXPConfig :: XPConfig
 myXPConfig = def{font = myFont}
 
 myWorkspaces :: [String]
-myWorkspaces = ["Web", "Term", "Emacs", "Chat", "Etc"]
+myWorkspaces = ["Web", "Term", "Emacs", "Mail", "Chat", "Etc"]
 
 main :: IO ()
 main =
@@ -87,6 +87,7 @@ myKeys =
   , ("M-t", spawn "/opt/thorium-browser/thorium")
   , ("M-f", spawn "thunar")
   , ("M-e", spawn "emacsclient -c")
+  , ("M-m", spawn "/usr/bin/betterbird") 
   , ("M-'", namedScratchpadAction scratchpads "term")
   , ("M-S-z", spawn "xscreensaver-command -lock")
   , ("<Print>", unGrab *> spawn "scrot -s ~/Bilder/%F_%T.png")
@@ -133,7 +134,7 @@ myManageHook =
 -- Startup ------------------------------------------------------------
 myStartupHook :: X ()
 myStartupHook = do
-  spawnOnce "setxkbmap -layout se -option '' -option caps:swapescape"
+  -- spawnOnce "setxkbmap -layout se -option '' -option caps:swapescape"
   spawnOnce "picom --config ~/.config/picom/picom.conf -b"
   spawnOnce "nitrogen --restore"
   spawnOnce "trayer --edge top --align right --widthtype request --height 22 --transparent true --alpha 0 --tint 0x3f3f3f --padding 2 --monitor primary"
@@ -143,6 +144,7 @@ myStartupHook = do
   spawnOnOnce "Web" "/opt/brave-bin/brave-browser"
   spawnOnOnce "Term" "/usr/bin/kitty"
   spawnOnOnce "Emacs" "/usr/bin/emacsclient -c"
+  spawnOnOnce "Mail" "/usr/bin/betterbird"
   spawnOnOnce "Chat" "/usr/bin/mattermost-desktop"
 
 -- Urgency ------------------------------------------------------------
@@ -165,6 +167,7 @@ myXmobarPP =
   def
     { ppSep = dim " │ "
     , ppWsSep = ""
+    , ppRename = \name _ -> clickable name
     , ppSort = fmap (filterOutWs [scratchpadWorkspaceTag] .) (ppSort def)
     , ppTitleSanitize = xmobarStrip
     , ppCurrent = xmobarBorder "Bottom" zenOrange 2 . yellow . pad
@@ -184,6 +187,14 @@ myXmobarPP =
   fg = xmobarColor zenFg ""
   dim = xmobarColor zenDim ""
   grey = xmobarColor zenGrey ""
+
+-- Left-click a workspace name in xmobar to switch to it. Sends Super+N via
+-- xdotool, so it relies on the default M-1..M-9 bindings and modMask = mod4Mask.
+-- Needs xdotool installed.
+clickable :: String -> String
+clickable ws = case lookup ws (zip myWorkspaces [1 :: Int ..]) of
+  Just n -> xmobarAction ("xdotool key super+" ++ show n) "1" ws
+  Nothing -> ws
 
 -- spacingRaw prefixes layout names with "Spacing "; shorten to dwm-style tags
 layoutName :: String -> String
