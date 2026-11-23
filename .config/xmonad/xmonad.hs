@@ -87,7 +87,7 @@ myKeys =
   , ("M-t", spawn "/opt/thorium-browser/thorium")
   , ("M-f", spawn "thunar")
   , ("M-e", spawn "emacsclient -c")
-  , ("M-m", spawn "/usr/bin/betterbird") 
+  , ("M-S-m", spawn "/usr/bin/betterbird") 
   , ("M-'", namedScratchpadAction scratchpads "term")
   , ("M-S-z", spawn "xscreensaver-command -lock")
   , ("<Print>", unGrab *> spawn "scrot -s ~/Bilder/%F_%T.png")
